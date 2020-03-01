@@ -5,6 +5,8 @@ import androidx.appcompat.widget.ButtonBarLayout;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -27,5 +29,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+    }
+
+    public void onConfigurationChanged(Configuration newConfig)
+    {
+        int currentOrientation = getResources().getConfiguration().orientation;
+        if(newConfig.orientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE || newConfig.orientation == ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE)
+        {
+            super.onConfigurationChanged(newConfig);
+        }
     }
 }

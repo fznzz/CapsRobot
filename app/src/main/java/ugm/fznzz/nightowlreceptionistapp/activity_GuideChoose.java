@@ -142,7 +142,7 @@ public class activity_GuideChoose extends AppCompatActivity {
     void beginListenData()
     {
         final Handler handler = new Handler();
-        final Byte delimiter = 10;
+        final byte delimiter = 10;
 
         stopWorker = false;
         readBufferPosition = 0;
