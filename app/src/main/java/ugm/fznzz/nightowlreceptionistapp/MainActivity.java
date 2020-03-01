@@ -30,13 +30,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-    public void onConfigurationChanged(Configuration newConfig)
-    {
-        int currentOrientation = getResources().getConfiguration().orientation;
-        if(newConfig.orientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE || newConfig.orientation == ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE)
-        {
-            super.onConfigurationChanged(newConfig);
-        }
-    }
 }

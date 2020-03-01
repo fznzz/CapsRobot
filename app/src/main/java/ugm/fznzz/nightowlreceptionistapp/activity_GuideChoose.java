@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Set;
 import java.util.UUID;
 import android.bluetooth.BluetoothAdapter;
@@ -31,6 +32,7 @@ public class activity_GuideChoose extends AppCompatActivity {
 
     TextView tv;
     ImageView iv;
+    EditText et;
     Button bt_back,bt_next, bt_openT, bt_closeT;
     BluetoothAdapter bAdapter;
     BluetoothSocket bSocket;
@@ -42,6 +44,7 @@ public class activity_GuideChoose extends AppCompatActivity {
     int readBufferPosition;
     int counter;
     volatile boolean stopWorker;
+    String message;
 
 
 
@@ -56,6 +59,8 @@ public class activity_GuideChoose extends AppCompatActivity {
         bt_openT = findViewById(R.id.bt_testOPEN);
         bt_closeT = findViewById(R.id.bt_testCLOSE);
         tv = findViewById(R.id.textviewtesting);
+        et = findViewById(R.id.editText);
+        message = getString(R.string.msgAcc);
 
         Picasso.get().load(R.drawable.map1stfloor).fit().into(iv);
         bt_back.setOnClickListener(new View.OnClickListener() {
@@ -116,7 +121,7 @@ public class activity_GuideChoose extends AppCompatActivity {
         {
             for(BluetoothDevice device : pairedDevice)
             {
-                if(device.getName().equals("testingIShere"))  //NAMA PERANGKAT BLUETOOTH
+                if(device.getName().equals("HC-05"))  //NAMA PERANGKAT BLUETOOTH
                 {
                     bDevice=device;
                     break;
@@ -165,12 +170,14 @@ public class activity_GuideChoose extends AppCompatActivity {
                                 {
                                     byte[] encodedBytes = new byte[readBufferPosition];
                                     System.arraycopy(readBuffer, 0, encodedBytes, 0, encodedBytes.length);
-                                    final String data = new String(encodedBytes, "US-ASCII");
+                                    final String data = new String(encodedBytes, StandardCharsets.US_ASCII);
                                     readBufferPosition=0;
                                     handler.post(new Runnable() {
                                         @Override
                                         public void run() {
                                             tv.setText(data);
+                                            Toast.makeText(activity_GuideChoose.this, "data received", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(activity_GuideChoose.this, data, Toast.LENGTH_SHORT).show();
                                         }
                                     });
                                 }
@@ -193,8 +200,9 @@ public class activity_GuideChoose extends AppCompatActivity {
 
     void sendData() throws IOException
     {
-        String msg = "testingdikirim";
+        String msg = "{"+et.getText().toString()+"}";
         msg += "\n";
+
         os.write(msg.getBytes());
         Toast.makeText(activity_GuideChoose.this, "Data send", Toast.LENGTH_SHORT).show();
     }
@@ -207,7 +215,7 @@ public class activity_GuideChoose extends AppCompatActivity {
             is.close();
             bSocket.close();
         }
-        catch (IOException ex) {Toast.makeText(activity_GuideChoose.this, "eror", Toast.LENGTH_SHORT).show();}
+        catch (IOException ex) {Toast.makeText(activity_GuideChoose.this, "error", Toast.LENGTH_SHORT).show();}
         Toast.makeText(activity_GuideChoose.this, "Bluetooth closed", Toast.LENGTH_SHORT).show();
     }
 }

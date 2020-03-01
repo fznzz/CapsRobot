@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Night Owl Receptionist App</string>
+    <string name="msgAcc"></string>
 </resources>
