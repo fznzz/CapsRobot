@@ -8,10 +8,15 @@ import android.graphics.drawable.BitmapDrawable;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
+import android.os.Looper;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -46,7 +51,7 @@ public class activity_GuideChoose extends AppCompatActivity {
     volatile boolean stopWorker;
     String message;
 
-
+    ByteArrayOutputStream buffer;
 
 
     @Override
@@ -159,28 +164,46 @@ public class activity_GuideChoose extends AppCompatActivity {
                         {
                             byte[] packetBytes = new byte[bytesAvailable];
                             is.read(packetBytes);
-                            for(int i=0; i<bytesAvailable; i++)
+
+                            int nRead;
+                            while ((nRead = is.read(packetBytes,0,packetBytes.length)) != -1)
                             {
-                                byte b = packetBytes[i];
-                                if(b==delimiter)
-                                {
-                                    byte[] encodedBytes = new byte[readBufferPosition];
-                                    System.arraycopy(readBuffer, 0, encodedBytes, 0, encodedBytes.length);
-                                    final String data = new String(encodedBytes, "US-ASCII");
-                                    readBufferPosition=0;
-                                    handler.post(new Runnable() {
-                                        public void run() {
-                                            tv.setText(data);
-                                            Toast.makeText(activity_GuideChoose.this, "data received", Toast.LENGTH_SHORT).show();
-                                            Toast.makeText(activity_GuideChoose.this, data, Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                }
-                                else
-                                {
-                                    readBuffer[readBufferPosition++] = b;
-                                }
+                                buffer.write(packetBytes,0,nRead);
                             }
+                            readBuffer = buffer.toByteArray();
+                            final String data = new String(readBuffer, "US-ASCII");
+                            handler.post((new Runnable() {
+                                @Override
+                                public void run() {
+                                    tv.setText(data);
+                                    Toast.makeText(activity_GuideChoose.this, "data received", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(activity_GuideChoose.this, data, Toast.LENGTH_SHORT).show();
+                                }
+                            }));
+
+
+//                            for(int i=0; i<bytesAvailable; i++)
+//                            {
+//                                byte b = packetBytes[i];
+//                                if(b==delimiter)
+//                                {
+//                                    byte[] encodedBytes = new byte[readBufferPosition];
+//                                    System.arraycopy(readBuffer, 0, encodedBytes, 0, encodedBytes.length);
+//                                    final String data = new String(encodedBytes, "US-ASCII");
+//                                    readBufferPosition=0;
+//                                    handler.post(new Runnable() {
+//                                        public void run() {
+//                                            tv.setText(data);
+//                                            Toast.makeText(activity_GuideChoose.this, "data received", Toast.LENGTH_SHORT).show();
+//                                            Toast.makeText(activity_GuideChoose.this, data, Toast.LENGTH_SHORT).show();
+//                                        }
+//                                    });
+//                                }
+//                                else
+//                                {
+//                                    readBuffer[readBufferPosition++] = b;
+//                                }
+//                            }
                         }
                     }
                     catch (IOException ex)
