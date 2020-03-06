@@ -48,6 +48,7 @@ public class activity_GuideChoose extends AppCompatActivity {
 
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,13 +65,11 @@ public class activity_GuideChoose extends AppCompatActivity {
 
         Picasso.get().load(R.drawable.map1stfloor).fit().into(iv);
         bt_back.setOnClickListener(new View.OnClickListener() {
-            @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        bt_openT.setOnClickListener(new View.OnClickListener() {
-            @Override
+        bt_openT.setOnClickListener(new View.OnClickListener() {    //open button
             public void onClick(View v) {
                 //opening
                 try {
@@ -80,8 +79,7 @@ public class activity_GuideChoose extends AppCompatActivity {
                 catch (IOException ex) { }
             }
         });
-        bt_next.setOnClickListener(new View.OnClickListener() {
-            @Override
+        bt_next.setOnClickListener(new View.OnClickListener() {     //send data button
             public void onClick(View v) {
                 //sending
                 try
@@ -91,8 +89,7 @@ public class activity_GuideChoose extends AppCompatActivity {
                 catch (IOException ex) { }
             }
         });
-        bt_closeT.setOnClickListener(new View.OnClickListener() {
-            @Override
+        bt_closeT.setOnClickListener(new View.OnClickListener() {    //close button
             public void onClick(View v) {
                 //closing
                 try
@@ -147,13 +144,12 @@ public class activity_GuideChoose extends AppCompatActivity {
     void beginListenData()
     {
         final Handler handler = new Handler();
-        final byte delimiter = 10;
+        final byte delimiter = 122;
 
         stopWorker = false;
         readBufferPosition = 0;
         readBuffer = new byte[1024];
         workerThread = new Thread(new Runnable() {
-            @Override
             public void run() {
                 while (!Thread.currentThread().isInterrupted() && !stopWorker)
                 {
@@ -170,10 +166,9 @@ public class activity_GuideChoose extends AppCompatActivity {
                                 {
                                     byte[] encodedBytes = new byte[readBufferPosition];
                                     System.arraycopy(readBuffer, 0, encodedBytes, 0, encodedBytes.length);
-                                    final String data = new String(encodedBytes, StandardCharsets.US_ASCII);
+                                    final String data = new String(encodedBytes, "US-ASCII");
                                     readBufferPosition=0;
                                     handler.post(new Runnable() {
-                                        @Override
                                         public void run() {
                                             tv.setText(data);
                                             Toast.makeText(activity_GuideChoose.this, "data received", Toast.LENGTH_SHORT).show();
@@ -183,7 +178,7 @@ public class activity_GuideChoose extends AppCompatActivity {
                                 }
                                 else
                                 {
-                                    readBuffer[readBufferPosition++]=b;
+                                    readBuffer[readBufferPosition++] = b;
                                 }
                             }
                         }
@@ -202,7 +197,6 @@ public class activity_GuideChoose extends AppCompatActivity {
     {
         String msg = "{"+et.getText().toString()+"}";
         msg += "\n";
-
         os.write(msg.getBytes());
         Toast.makeText(activity_GuideChoose.this, "Data send", Toast.LENGTH_SHORT).show();
     }
