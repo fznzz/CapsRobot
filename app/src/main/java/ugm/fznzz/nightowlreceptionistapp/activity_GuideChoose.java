@@ -1,6 +1,9 @@
 package ugm.fznzz.nightowlreceptionistapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -53,6 +56,10 @@ public class activity_GuideChoose extends AppCompatActivity {
 
     ByteArrayOutputStream buffer;
 
+    private RecyclerView rview;
+    private RecyclerView.LayoutManager layoutManager;
+    private RecyclerView.ViewHolder vh;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +74,14 @@ public class activity_GuideChoose extends AppCompatActivity {
         tv = findViewById(R.id.textviewtesting);
         et = findViewById(R.id.editText);
         message = getString(R.string.msgAcc);
+
+        rview = findViewById(R.id.list_ruangan);
+        rview.setHasFixedSize(true);
+        rview.setItemAnimator(new DefaultItemAnimator());
+
+        layoutManager = new LinearLayoutManager(getBaseContext());
+        rview.setLayoutManager(layoutManager);
+
 
         Picasso.get().load(R.drawable.map1stfloor).fit().into(iv);
         bt_back.setOnClickListener(new View.OnClickListener() {
@@ -162,26 +177,24 @@ public class activity_GuideChoose extends AppCompatActivity {
                         int bytesAvailable = is.available();
                         if(bytesAvailable>0)
                         {
-                            byte[] packetBytes = new byte[bytesAvailable];
+                 byte[] packetBytes = new byte[bytesAvailable];
                             is.read(packetBytes);
 
-                            int nRead;
+                                int nRead;
                             while ((nRead = is.read(packetBytes,0,packetBytes.length)) != -1)
-                            {
-                                buffer.write(packetBytes,0,nRead);
-                            }
-                            readBuffer = buffer.toByteArray();
-                            final String data = new String(readBuffer, "US-ASCII");
+                                {
+                                    buffer.write(packetBytes,0,nRead);
+                                }
+                                readBuffer = buffer.toByteArray();
+                                final String data = new String(readBuffer, "US-ASCII");
                             handler.post((new Runnable() {
-                                @Override
-                                public void run() {
+                                    @Override
+                                    public void run() {
                                     tv.setText(data);
                                     Toast.makeText(activity_GuideChoose.this, "data received", Toast.LENGTH_SHORT).show();
                                     Toast.makeText(activity_GuideChoose.this, data, Toast.LENGTH_SHORT).show();
                                 }
                             }));
-
-
 //                            for(int i=0; i<bytesAvailable; i++)
 //                            {
 //                                byte b = packetBytes[i];

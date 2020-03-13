@@ -1,4 +1,56 @@
 <resources>
     <string name="app_name">Night Owl Receptionist App</string>
     <string name="msgAcc"></string>
+
+    <string-array name="nama_ruangan">
+        <item>Lobby</item>
+        <item>Lab Honeywell</item>
+        <item>Kamar Mandi Selatan</item>
+        <item>Kamar Mandi Utara</item>
+        <item>Tegangan Tinggi</item>
+        <item>TD</item>
+        <item>Ruang Sidang</item>
+        <item>Ruang Dosen</item>
+        <item>TTLD</item>
+        <item>Instalasi</item>
+        <item>Keuangan</item>
+        <item>Alumni</item>
+        <item>Pengelola</item>
+        <item>Teleconference</item>
+        <item>Lab Artificial Intelligence</item>
+    </string-array>
+    <string-array name="nama_lantai">
+        <item>Lantai 1</item>
+        <item>Lantai 1</item>
+        <item>Lantai 1</item>
+        <item>Lantai 1</item>
+        <item>Lantai 1</item>
+        <item>Lantai 1</item>
+        <item>Lantai 1</item>
+        <item>Lantai 1</item>
+        <item>Lantai 1</item>
+        <item>Lantai 1</item>
+        <item>Lantai 1</item>
+        <item>Lantai 1</item>
+        <item>Lantai 1</item>
+        <item>Lantai 1</item>
+        <item>Lantai 1</item>
+    </string-array>
+    <string-array name="kode_ruangan">
+        <item>L</item>
+        <item>H</item>
+        <item>S</item>
+        <item>N</item>
+        <item>T</item>
+        <item>D</item>
+        <item>G</item>
+        <item>E</item>
+        <item>R</item>
+        <item>I</item>
+        <item>K</item>
+        <item>A</item>
+        <item>P</item>
+        <item>C</item>
+        <item>B</item>
+    </string-array>
 </resources>
